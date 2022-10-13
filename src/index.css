@@ -1,80 +1,166 @@
-.layered-board {
-    display:flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+.minesweeper-3d {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-
-.layer {
-    margin: 10px;
+.minesweeper-3d .game-config ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
-
-.line {
-    display: flex;
-    flex-direction: row;
+.minesweeper-3d .game-config ul li {
+  margin: 20px;
 }
-
-.square {
-    background: none;
-	color: inherit;
-    
-	padding: 0;
-    width:30px;
-    height:30px;
-	font: inherit;
-	cursor: pointer;
-	outline: inherit;
-    display: inline-block;
-    font-weight: bold;
+.minesweeper-3d .game-config ul li button {
+  background-color: #69d45b;
+  color: inherit;
+  border: 1px solid skyblue;
+  color: white;
+  padding: 10px;
+  min-width: 220px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  cursor: pointer;
+  outline: inherit;
 }
-
-.hidden {
-    background-color: lightgrey;
+.minesweeper-3d .game-config ul li button[disabled] {
+  border: 1px solid #b9b9b9;
+  background-color: #989898;
+  color: lightgrey;
+  cursor: default;
 }
-
-.has_flag {
-    background-image: url("./images/Flag.png");
-    background-size: contain;
-    background-repeat: no-repeat;
+.minesweeper-3d .session button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12pt;
+  cursor: pointer;
+  outline: inherit;
+  display: inline-block;
 }
-
-.has_mine {
-    background-image: url("./images/Mine.png");
-    background-size: contain;
-    background-repeat: no-repeat;
+.minesweeper-3d .session .game-hud {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  border: 1px solid black;
 }
-
-.highlighted {
-    background-color: lightyellow;
+.minesweeper-3d .session .game-hud .flag-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
 }
-
-.hidden.highlighted {
-    background-color: yellow;
+.minesweeper-3d .session .game-hud .flag-info .flag-icon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-image: url("./images/Flag.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  font-size: 0px;
 }
-
-.blue_text{
-    color: blue;
+.minesweeper-3d .session .game-hud .restart-button {
+  font-size: 0px;
+  width: 60px;
+  height: 60px;
+  background-image: url("./images/Smiley.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
-
-.green_text{
-    color: green;
+.minesweeper-3d .session .game-hud .restart-button.surprised {
+  background-image: url("./images/Surprised.png");
 }
-
-.red_text{
-    color: red;
+.minesweeper-3d .session .game-hud .restart-button.sunglasses {
+  background-image: url("./images/Sunglasses.png");
 }
-
-.dark_blue_text{
-    color: darkblue;
+.minesweeper-3d .session .game-hud .restart-button.dead {
+  background-image: url("./images/Dead.png");
 }
-
-.dark_red_text{
-    color: darkred;
+.minesweeper-3d .session .game-hud .timer-display {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
 }
-
-.turquoise_text{
-    color: turquoise;
+.minesweeper-3d .session .layered-board {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
-
-.black_text{
-    color: black;
+.minesweeper-3d .session .layered-board .layer {
+  margin: 10px;
+  border: 1px solid skyblue;
 }
+.minesweeper-3d .session .layered-board .layer .line {
+  display: flex;
+  flex-direction: row;
+}
+.minesweeper-3d .session .layered-board .layer .line .square {
+  font-weight: bold;
+}
+.minesweeper-3d .session .layered-board .layer .line .square.light {
+  background-color: #f6e3d3;
+}
+.minesweeper-3d .session .layered-board .layer .line .square.light.highlighted {
+  background-color: #f5edb2;
+}
+.minesweeper-3d .session .layered-board .layer .line .square.dark {
+  background-color: #f2d9c2;
+}
+.minesweeper-3d .session .layered-board .layer .line .square.dark.highlighted {
+  background-color: #f3e8a9;
+}
+.minesweeper-3d .session .layered-board .layer .line .square.hidden.light {
+  background-color: #81de74;
+}
+.minesweeper-3d .session .layered-board .layer .line .square.hidden.light.highlighted {
+  background-color: #bbea82;
+}
+.minesweeper-3d .session .layered-board .layer .line .square.hidden.dark {
+  background-color: #69d45b;
+}
+.minesweeper-3d .session .layered-board .layer .line .square.hidden.dark.highlighted {
+  background-color: #afe576;
+}
+.minesweeper-3d .session .layered-board .layer .line .square.has_mine {
+  background-image: url("./images/Mine.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.minesweeper-3d .session .layered-board .layer .line .square.has_flag {
+  background-image: url("./images/Flag.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.minesweeper-3d .session .layered-board .layer .line .square.has_no_mine {
+  background-image: url("./images/NoMine.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.minesweeper-3d .session .layered-board .layer .line .square .blue_text {
+  color: #1d67b1;
+}
+.minesweeper-3d .session .layered-board .layer .line .square .green_text {
+  color: #40b830;
+}
+.minesweeper-3d .session .layered-board .layer .line .square .red_text {
+  color: #df4d39;
+}
+.minesweeper-3d .session .layered-board .layer .line .square .dark_blue_text {
+  color: #004c9c;
+}
+.minesweeper-3d .session .layered-board .layer .line .square .dark_red_text {
+  color: #b13c1d;
+}
+.minesweeper-3d .session .layered-board .layer .line .square .turquoise_text {
+  color: #13baae;
+}
+.minesweeper-3d .session .layered-board .layer .line .square .black_text {
+  color: #515151;
+}/*# sourceMappingURL=index.css.map */
