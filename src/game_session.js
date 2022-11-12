@@ -198,8 +198,8 @@ class GameSession extends React.Component {
     }
 
     handleMouseEnter(event) {
-        const button = event.target;
-        const button_coordinates = this.getSquareCoordinates(button)
+        const button = event.currentTarget;
+        const button_coordinates = this.getSquareCoordinates(button);
         
         this.setState({
             hovered_coordinates: button_coordinates,
@@ -208,7 +208,7 @@ class GameSession extends React.Component {
 
     handleLeftClick(event) {
         if (!this.state.game_over && !this.state.game_won) {
-            const button = event.target;
+            const button = event.currentTarget;
             const button_coordinates = this.getSquareCoordinates(button)
             const x = button_coordinates.x
             const y = button_coordinates.y
@@ -278,7 +278,7 @@ class GameSession extends React.Component {
         event.preventDefault();
         
         if (this.state.game_started && !this.state.game_over  && !this.state.game_won) {
-            const button = event.target;
+            const button = event.currentTarget;
             const button_coordinates = this.getSquareCoordinates(button)
             const x = button_coordinates.x
             const y = button_coordinates.y
