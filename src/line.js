@@ -1,5 +1,5 @@
 import React from 'react';
-import Square from './square';
+import Square from './square.tsx';
 
 class Line extends React.Component {
     renderSquare(i) {

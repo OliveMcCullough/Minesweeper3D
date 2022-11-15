@@ -1,9 +1,34 @@
-import React from 'react';
-import GameConfig from './game_config';
+import React, { MouseEventHandler } from 'react';
+import GameConfig from './game_config.tsx';
+import { Coordinate, LayerData, LayerSetData, LineData, SquareData } from './interfaces';
 import LayeredBoard from './layered_board';
 
-class GameSession extends React.Component {
-    constructor(props) {
+interface GameSessionProps {
+    width: number;
+    height: number;
+    layer_amount: number;
+    mine_amount: number;
+}
+
+interface GameSessionState {
+    layers: LayerSetData;
+    game_started: Boolean;
+    layer_amount: number,
+    width: number,
+    height: number,
+    mine_amount: number,
+    hovered_coordinates:Coordinate,
+    game_over: Boolean,
+    game_won: Boolean,
+    flags_placed: number,
+    timer: number,
+    timer_function: null | number,
+    restart_surprised: Boolean,
+    
+}
+
+class GameSession extends React.Component<GameSessionProps, GameSessionState> {
+    constructor(props: GameSessionProps) {
         super(props);
 
         const width = this.props.width;
@@ -30,17 +55,17 @@ class GameSession extends React.Component {
         }
     }
 
-    getLayers(width, height, layer_amount) {
+    getLayers(width: number, height: number, layer_amount: number) {
         const base_value = {
             revealed: false,
-            value: "0",
+            value: 0,
             has_flag: false,
         }
         const layers = [...Array(layer_amount)].map(e => [...Array(height)].map(e => Array(width).fill(base_value)))
         return layers;
     }
 
-    checkCoordinateAvoided(mine_coordinate, avoid_coordinate) {
+    checkCoordinateAvoided(mine_coordinate: Coordinate, avoid_coordinate: Coordinate) {
         for (let z = avoid_coordinate.z-1; z <= avoid_coordinate.z + 1; z ++) {
             for (let y = avoid_coordinate.y-1; y <= avoid_coordinate.y + 1; y ++) {
                 for (let x = avoid_coordinate.x-1; x <= avoid_coordinate.x + 1; x ++) {
@@ -59,14 +84,15 @@ class GameSession extends React.Component {
         })
     }
 
-    handleRestartGame(event) {
+    handleRestartGame(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         const width = this.state.width;
         const height = this.state.height;
         const layer_amount = this.state.layer_amount;
 
         const layers = this.getLayers(width, height, layer_amount);
 
-        clearTimeout(this.state.timer_function);
+        if(this.state.timer_function)
+            clearTimeout(this.state.timer_function);
 
         this.setState({
             game_started: false,
@@ -79,10 +105,10 @@ class GameSession extends React.Component {
         });
     }
 
-    generateMineCoordinates(width, height, layer_amount, mine_amount, avoid_coordinate) {
-        const mine_coordinates = []
+    generateMineCoordinates(width: number, height: number, layer_amount: number, mine_amount: number, avoid_coordinate: Coordinate): Coordinate[] {
+        const mine_coordinates:Coordinate[] = []
         for(let i = 0; i < mine_amount; i++) {
-            let mine_coordinate;
+            let mine_coordinate: Coordinate;
             while (true) {
                 const x = Math.floor(Math.random()*width);
                 const y = Math.floor(Math.random()*height);
@@ -99,7 +125,7 @@ class GameSession extends React.Component {
         return mine_coordinates;
     }
 
-    getCoordValue(x, y, z, mine_coordinates, width, height, layer_amount) {
+    getCoordValue(x: number, y: number, z: number, mine_coordinates: Coordinate[], width: number, height: number, layer_amount: number): number | "X" {
         if(mine_coordinates.find(coordinate => coordinate.x === x && coordinate.y === y  && coordinate.z === z)){
             return 'X';
         } else {
@@ -119,21 +145,21 @@ class GameSession extends React.Component {
                     }
                 }
             }
-            return amount_surrounding_mines.toString();
+            return amount_surrounding_mines;
         }
     }
 
-    generateNewMap(width, height, layer_amount, mine_amount, avoid_coordinate) {
+    generateNewMap(width: number, height: number, layer_amount: number, mine_amount: number, avoid_coordinate: Coordinate) {
         const mine_coordinates = this.generateMineCoordinates(width, height, layer_amount, mine_amount, avoid_coordinate);
 
-        const layers = []
+        const layers:LayerSetData = []
         for(let z = 0; z < this.state.layer_amount; z++){
-            let lines = []
+            let lines:LayerData = []
             for(let y = 0; y < this.state.height; y++){
-                let row = [];
+                let row:LineData = [];
                 for(let x = 0; x < width; x++){
                     let value = this.getCoordValue(x, y, z, mine_coordinates, width, height, layer_amount);
-                    let square = {
+                    let square:SquareData = {
                         revealed: false,
                         value: value,
                         has_flag: false
@@ -148,11 +174,11 @@ class GameSession extends React.Component {
         return layers;
     }
 
-    revealBlock(layers, x, y, z) {
+    revealBlock(layers: LayerSetData, x: number, y: number, z: number) {
         const block = layers[z][y][x]
         if(!block.revealed && !block.has_flag){
             block.revealed = true;
-            if (block.value === "0") {
+            if (block.value === 0) {
                 for(let z_shift = -1; z_shift <= 1; z_shift ++) {
                     if (z + z_shift >= 0 && z + z_shift < this.state.layer_amount) {
                         for(let y_shift = -1; y_shift <= 1; y_shift ++) {
@@ -197,7 +223,7 @@ class GameSession extends React.Component {
         }
     }
 
-    handleMouseEnter(event) {
+    handleMouseEnter(event: React.MouseEvent<HTMLButtonElement>) {
         const button = event.currentTarget;
         const button_coordinates = this.getSquareCoordinates(button);
         
@@ -206,7 +232,7 @@ class GameSession extends React.Component {
         })
     }
 
-    handleLeftClick(event) {
+    handleLeftClick(event: React.MouseEvent<HTMLButtonElement>) {
         if (!this.state.game_over && !this.state.game_won) {
             const button = event.currentTarget;
             const button_coordinates = this.getSquareCoordinates(button)
@@ -254,7 +280,7 @@ class GameSession extends React.Component {
         }
     }
 
-    updateGameSession(width, height, layer_amount, mine_amount) {
+    updateGameSession(width: number, height: number, layer_amount: number, mine_amount: number) {
         const layers = this.getLayers(width, height, layer_amount)
 
         this.setState ({
@@ -274,7 +300,7 @@ class GameSession extends React.Component {
         });
     }
 
-    handleRightClick(event) {
+    handleRightClick(event: React.MouseEvent<HTMLButtonElement>) {
         event.preventDefault();
         
         if (this.state.game_started && !this.state.game_over  && !this.state.game_won) {
@@ -334,7 +360,7 @@ class GameSession extends React.Component {
                         height={this.state.height}
                         layer_amount={this.state.layer_amount}
                         mine_amount={this.state.mine_amount}
-                        updateGameSession={(width, height, layer_amount, mine_amount) => this.updateGameSession(width, height, layer_amount, mine_amount)}
+                        updateGameSession={(width:number, height: number, layer_amount: number, mine_amount: number) => this.updateGameSession(width, height, layer_amount, mine_amount)}
                 />
                 <div className="session">
                     <div className= "game-hud">
@@ -342,15 +368,15 @@ class GameSession extends React.Component {
                             <div className="flag-icon">Flags left:</div>
                             <span> {flags_left} </span>
                         </div>
-                        <button className={restart_button_classes} onClick={event => this.handleRestartGame(event)}> Restart </button>
+                        <button className={restart_button_classes} onClick={this.handleRestartGame}> Restart </button>
                         <div className="timer-display"> <span> {timer_display} </span> </div>
                     </div>
                     <div className= "layered-board">
                         <LayeredBoard 
                             layers={this.state.layers}
-                            onLeftClick={event => this.handleLeftClick(event)}
-                            onRightClick={event => this.handleRightClick(event)}
-                            onMouseEnter={event => this.handleMouseEnter(event)}
+                            onLeftClick={(event:React.MouseEvent<HTMLButtonElement>) => this.handleLeftClick(event)}
+                            onRightClick={(event:React.MouseEvent<HTMLButtonElement>) => this.handleRightClick(event)}
+                            onMouseEnter={(event:React.MouseEvent<HTMLButtonElement>) => this.handleMouseEnter(event)}
                             hovered_coordinates={this.state.hovered_coordinates}
                             game_over={this.state.game_over}
                             game_won={this.state.game_won}
