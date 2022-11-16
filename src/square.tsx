@@ -1,24 +1,38 @@
 import React from 'react';
+import { SquareValue } from './interfaces';
 
-class Square extends React.Component {
-    preventContextMenu (event) {
+interface SquareProps {
+    revealed: Boolean;
+    has_flag:Boolean;
+    highlighted:Boolean;
+    value:SquareValue;
+    even:Boolean;
+    game_over:Boolean;
+    game_won:Boolean;
+    onLeftClick:(event: React.MouseEvent<HTMLButtonElement>) => void;
+    onRightClick:(event: React.MouseEvent<HTMLButtonElement>) => void;
+    onMouseEnter:(event: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+class Square extends React.Component<SquareProps> {
+    preventContextMenu (event:React.MouseEvent) {
         event.preventDefault();
     }
 
-    renderButtonContent(revealed, value) {
-        if (!revealed || value === "0" || value === "X"){
+    renderButtonContent(revealed: Boolean, value: SquareValue) {
+        if (!revealed || value === 0 || value === "X"){
             return null;
         } else {
-            const value_to_colour_dict = {
-                "1": "blue_text",
-                "2": "green_text",
-                "3": "red_text",
-                "4": "dark_blue_text",
-                "5": "dark_red_text",
-                "6": "turquoise_text"
+            const value_to_colour_dict:{[key:number]:string} = {
+                1: "blue_text",
+                2: "green_text",
+                3: "red_text",
+                4: "dark_blue_text",
+                5: "dark_red_text",
+                6: "turquoise_text"
             };
-            let text_class;
-            if (parseInt(value)>= 7) {
+            let text_class:string;
+            if (value>= 7) {
                 text_class = "black_text";
             } else {
                 text_class = value_to_colour_dict[value];

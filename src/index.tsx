@@ -11,12 +11,16 @@ import './images/Smiley.png';
 import './images/Dead.png';
 import './images/Sunglasses.png';
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-    <GameSession
-        width={10}
-        height={10}
-        layer_amount={5}
-        mine_amount={30}
-    />
-);
+const rootElement = document.getElementById("root");
+if (rootElement instanceof HTMLElement)
+{
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(
+        <GameSession
+            width={10}
+            height={10}
+            layer_amount={5}
+            mine_amount={30}
+        />
+    );
+}

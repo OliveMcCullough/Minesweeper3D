@@ -1,8 +1,20 @@
 import React from 'react';
+import { Coordinate, LayerData } from './interfaces';
 import Line from './line';
 
-class Layer extends React.Component {
-    renderLine(i) {
+interface LayerProps {
+    hovered_coordinates: Coordinate;
+    lines: LayerData;
+    onLeftClick:(event: React.MouseEvent<HTMLButtonElement>) => void;
+    onRightClick:(event: React.MouseEvent<HTMLButtonElement>) => void;
+    onMouseEnter:(event: React.MouseEvent<HTMLButtonElement>) => void;
+    game_over: Boolean;
+    game_won: Boolean;
+    highlighted: Boolean;
+}
+
+class Layer extends React.Component<LayerProps> {
+    renderLine(i: number) {
         const hovered_coordinates = this.props.hovered_coordinates;
         const highlighted = (i >= hovered_coordinates.y - 1 && i <= hovered_coordinates.y + 1) && this.props.highlighted;
         const even_line = (i  % 2 === 0)
