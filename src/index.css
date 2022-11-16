@@ -143,6 +143,9 @@
   background-size: contain;
   background-repeat: no-repeat;
 }
+.minesweeper-3d .session .layered-board .layer .line .square span {
+  pointer-events: none;
+}
 .minesweeper-3d .session .layered-board .layer .line .square .blue_text {
   color: #1d67b1;
 }

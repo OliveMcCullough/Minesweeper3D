@@ -1,8 +1,21 @@
 import React from 'react';
+import { Coordinate, LineData } from './interfaces';
 import Square from './square';
 
-class Line extends React.Component {
-    renderSquare(i) {
+interface LineProps {
+    hovered_coordinates: Coordinate;
+    squares: LineData;
+    onLeftClick:(event: React.MouseEvent<HTMLButtonElement>) => void;
+    onRightClick:(event: React.MouseEvent<HTMLButtonElement>) => void;
+    onMouseEnter:(event: React.MouseEvent<HTMLButtonElement>) => void;
+    game_over: Boolean;
+    game_won: Boolean;
+    highlighted: Boolean;
+    even_line: Boolean;
+}
+
+class Line extends React.Component<LineProps> {
+    renderSquare(i: number) {
         const square = this.props.squares[i];
         const value = square.value;
         const revealed = square.revealed;
