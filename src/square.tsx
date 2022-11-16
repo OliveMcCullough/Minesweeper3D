@@ -8,6 +8,7 @@ interface SquareProps {
     value:SquareValue;
     even:Boolean;
     game_over:Boolean;
+    game_won:Boolean;
     onLeftClick:(event: React.MouseEvent<HTMLButtonElement>) => void;
     onRightClick:(event: React.MouseEvent<HTMLButtonElement>) => void;
     onMouseEnter:(event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -22,7 +23,7 @@ class Square extends React.Component<SquareProps> {
         if (!revealed || value === 0 || value === "X"){
             return null;
         } else {
-            const value_to_colour_dict = {
+            const value_to_colour_dict:{[key:number]:string} = {
                 1: "blue_text",
                 2: "green_text",
                 3: "red_text",
@@ -30,7 +31,7 @@ class Square extends React.Component<SquareProps> {
                 5: "dark_red_text",
                 6: "turquoise_text"
             };
-            let text_class;
+            let text_class:string;
             if (value>= 7) {
                 text_class = "black_text";
             } else {

@@ -1,5 +1,5 @@
 import React, { MouseEventHandler } from 'react';
-import GameConfig from './game_config.tsx';
+import GameConfig from './game_config';
 import { Coordinate, LayerData, LayerSetData, LineData, SquareData } from './interfaces';
 import LayeredBoard from './layered_board';
 
@@ -198,21 +198,24 @@ class GameSession extends React.Component<GameSessionProps, GameSessionState> {
         return layers;
     }
 
-    getSquareCoordinates(button) {
-        const line = button.closest(".line")
-        const layer = line.closest(".layer")
-        const board = layer.closest(".layered-board")
+    getSquareCoordinates(button: HTMLElement) {
+        const line = button.closest(".line");
+        const layer = line?.closest(".layer");
+        const board = layer?.closest(".layered-board");
+
+        if (board === undefined)
+            throw Error("Incorrect coordinates");
         
-        const x = Array.prototype.indexOf.call(line.children, button);
-        const y = Array.prototype.indexOf.call(layer.children, line);
-        const z = Array.prototype.indexOf.call(board.children, layer);
+        const x = Array.prototype.indexOf.call(line!.children, button);
+        const y = Array.prototype.indexOf.call(layer!.children, line);
+        const z = Array.prototype.indexOf.call(board!.children, layer);
         return {x: x, y: y, z: z};
     }
 
     incrementTimer() {
         if(this.state.game_started && !this.state.game_over && !this.state.game_won)
         {
-            const timer_function = setTimeout(this.incrementTimer.bind(this), 1000)
+            const timer_function = window.setTimeout(this.incrementTimer.bind(this), 1000)
             let timer = this.state.timer;
             timer ++;
 
@@ -242,14 +245,14 @@ class GameSession extends React.Component<GameSessionProps, GameSessionState> {
 
             let layers = this.state.layers;
 
-            let timer_function = this.state.timer_function;
+            let timer_function:number|null = this.state.timer_function;
 
             if(!this.state.game_started) {
                 const avoid_coordinate = {x: x, y: y, z: z}
 
                 layers = this.generateNewMap(this.state.width, this.state.height, this.state.layer_amount, this.state.mine_amount, avoid_coordinate)
                 
-                timer_function = setTimeout(this.incrementTimer.bind(this), 1000)
+                timer_function = window.setTimeout(this.incrementTimer.bind(this), 1000)
             }
 
             let game_over = false;
@@ -368,7 +371,7 @@ class GameSession extends React.Component<GameSessionProps, GameSessionState> {
                             <div className="flag-icon">Flags left:</div>
                             <span> {flags_left} </span>
                         </div>
-                        <button className={restart_button_classes} onClick={this.handleRestartGame}> Restart </button>
+                        <button className={restart_button_classes} onClick={(event) => this.handleRestartGame(event)}> Restart </button>
                         <div className="timer-display"> <span> {timer_display} </span> </div>
                     </div>
                     <div className= "layered-board">

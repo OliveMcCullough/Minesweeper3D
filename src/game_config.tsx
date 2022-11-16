@@ -134,7 +134,7 @@ class GameConfig extends React.Component<GameConfigProps, GameConfigState> {
     render () {
         const button_inactive = !this.state.config_valid;
         return(
-            <form className="game-config" onSubmit={(e) => this.handleFormSubmit}>
+            <form className="game-config" onSubmit={(event) => this.handleFormSubmit(event)}>
                 <ul>
                     <li>
                         <label htmlFor="width_id">Width:</label> 
@@ -143,7 +143,7 @@ class GameConfig extends React.Component<GameConfigProps, GameConfigState> {
                             type="number" 
                             value={this.state.width}
                             min="5"
-                            onChange={this.updateWidthValue}
+                            onChange={(event) => this.updateWidthValue(event)}
                         />
                     </li>
                     <li>
@@ -153,7 +153,7 @@ class GameConfig extends React.Component<GameConfigProps, GameConfigState> {
                             type="number" 
                             value={this.state.height}
                             min="5"
-                            onChange={this.updateHeightValue}
+                            onChange={(event) => this.updateHeightValue(event)}
                         />
                     </li>
                     <li>
@@ -163,7 +163,7 @@ class GameConfig extends React.Component<GameConfigProps, GameConfigState> {
                             type="number"
                             min="1"
                             value={this.state.layer_amount}
-                            onChange={this.updateLayerAmountValue}
+                            onChange={(event) => this.updateLayerAmountValue(event)}
                         />
                     </li>
                     <li>
@@ -173,7 +173,7 @@ class GameConfig extends React.Component<GameConfigProps, GameConfigState> {
                             type="number" 
                             min="5"
                             value={this.state.mine_amount}
-                            onChange={this.updateMineAmountValue}
+                            onChange={(event) => this.updateMineAmountValue(event)}
                         />
                     </li>
                     <li>
